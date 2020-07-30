@@ -1,0 +1,33 @@
+version: '3.4'
+services:
+  app:
+    image: kotlin-auth-service
+    environment:
+      - SERVER_PORT=7000
+      - LOG_LOCATION=/var/log/application
+      - ENABLE_DEBUG=true
+      - DATABASE_URL=jdbc:postgresql://database:5432/postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - AUTH_SECRET=devlhse_auth_secret
+    container_name: kotlin-auth-service-app
+    ports:
+      - 7000:7000
+    depends_on:
+      - database
+  database:
+    restart: always
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    container_name: database
+    ports:
+      - 5433:5432
+  migration:
+    image: boxfuse/flyway:latest
+    container_name: flyway_migration
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    command: -url=jdbc:postgresql://database:5432/postgres -user=postgres -password=postgres migrate
+    depends_on:
+      - database

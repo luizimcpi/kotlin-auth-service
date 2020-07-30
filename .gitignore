@@ -1,0 +1,24 @@
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+.DS_Store
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### Log files ###
+*.log
+/logs/
+
+### Secret environment variables ###
+.envrc.secret
+env/*
+!env/local.env
+
+# Backups / tmp
+*.bkp
+*.tmp

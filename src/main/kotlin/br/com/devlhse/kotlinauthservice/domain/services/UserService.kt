@@ -16,7 +16,7 @@ class UserService(private val cipher: Cipher,
                   private val userRepository: UserRepository) {
 
     private val base64Encoder = Base64.getEncoder()
-    val logger = LogManager.getLogger(UserService::class.java.name)
+    private val logger = LogManager.getLogger(UserService::class.java.name)
 
     fun findAll(): List<UserResponse> {
         return userRepository.findAll()

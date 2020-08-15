@@ -1,5 +1,6 @@
 package br.com.devlhse.kotlinauthservice.application.web
 
+import br.com.devlhse.kotlinauthservice.application.web.routes.HealthRoutes
 import br.com.devlhse.kotlinauthservice.application.web.routes.UserRoutes
 import br.com.devlhse.kotlinauthservice.config.AuthConfig
 import br.com.devlhse.kotlinauthservice.config.DatabaseConfig
@@ -41,6 +42,7 @@ object AuthServiceEntryPoint : KoinComponent {
 
         app.routes {
             UserRoutes.init()
+            HealthRoutes.init()
         }
     }
 }

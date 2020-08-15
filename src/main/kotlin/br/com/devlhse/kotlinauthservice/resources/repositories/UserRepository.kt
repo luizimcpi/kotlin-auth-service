@@ -17,11 +17,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.time.LocalDateTime
 
-
-@SuppressWarnings("MagicNumber")
 class UserRepository: UserRepository {
 
-    val logger = LogManager.getLogger(UserRepository::class.java.name)
+    private val logger = LogManager.getLogger(UserRepository::class.java.name)
 
     override fun findAll(): List<UserResponse> {
         var users = mutableListOf<UserResponse>()

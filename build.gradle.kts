@@ -1,4 +1,4 @@
-val mainClass = "br.com.devlhse.kotlinauthservice.application.Main"
+val mainClass = "br.com.devlhse.kotlinauthservice.application.ApplicationMain"
 
 buildscript {
     repositories {
@@ -63,7 +63,7 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = "0.44".toBigDecimal()
+                minimum = "0.59".toBigDecimal()
             }
         }
     }
@@ -73,8 +73,8 @@ tasks.jacocoTestCoverageVerification {
             exclude("br/com/devlhse/kotlinauthservice/application/**")
             exclude("br/com/devlhse/kotlinauthservice/config/**")
             exclude("br/com/devlhse/kotlinauthservice/domain/model/**")
+            exclude("br/com/devlhse/kotlinauthservice/domain/common/**")
             exclude("br/com/devlhse/kotlinauthservice/domain/repositories/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/services/UserService.kt")
             exclude("br/com/devlhse/kotlinauthservice/exception/**")
             exclude("br/com/devlhse/kotlinauthservice/resources/**")
         }

@@ -20,7 +20,7 @@ docker run --name teste-postgres -e "POSTGRES_PASSWORD=postgres" -p 5432:5432 -d
 ```
 OR
 
-## Create local postgres database - linux
+## Create local postgres database - linux ubuntu or debian
 ```
 sudo apt update
 sudo apt install postgresql postgresql-contrib
@@ -66,6 +66,10 @@ OR
 jacocoReport -> build/reports/jacoco/test/jacocoTestReport.xml
 ```
 
+## Executing Endpoints
+```
+File requests.rest can be open with plugin REST client in VSCode
+```
 
 ## Used Libs
 
@@ -84,7 +88,6 @@ jacocoReport -> build/reports/jacoco/test/jacocoTestReport.xml
 [Junit 5](https://junit.org/junit5/)
 
 ## TO DO
-- [ ] application health check
 - [ ] remove password from login response
 - [ ] prevent an user can consult another users information
 - [ ] create and configure arch tests ArchUnit

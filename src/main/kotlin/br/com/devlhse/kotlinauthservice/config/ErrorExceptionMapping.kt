@@ -5,6 +5,7 @@ import br.com.devlhse.kotlinauthservice.exception.NotFoundException
 import br.com.devlhse.kotlinauthservice.exception.UnauthorizedException
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
+import com.auth0.jwt.exceptions.TokenExpiredException
 import io.javalin.Javalin
 import org.eclipse.jetty.http.HttpStatus
 
@@ -17,11 +18,15 @@ object ErrorExceptionMapping {
             val error = ErrorResponse(mapOf("message" to "Invalid accessToken !"))
             ctx.json(error).status(HttpStatus.UNAUTHORIZED_401)
         }
-        app.exception(UnauthorizedException::class.java) { e, ctx ->
+        app.exception(UnauthorizedException::class.java) { _, ctx ->
             val error = ErrorResponse(mapOf("message" to "Invalid accessToken !"))
             ctx.json(error).status(HttpStatus.UNAUTHORIZED_401)
         }
-        app.exception(SignatureVerificationException::class.java) { e, ctx ->
+        app.exception(SignatureVerificationException::class.java) { _, ctx ->
+            val error = ErrorResponse(mapOf("message" to "Invalid accessToken !"))
+            ctx.json(error).status(HttpStatus.UNAUTHORIZED_401)
+        }
+        app.exception(TokenExpiredException::class.java) { _, ctx ->
             val error = ErrorResponse(mapOf("message" to "Invalid accessToken !"))
             ctx.json(error).status(HttpStatus.UNAUTHORIZED_401)
         }

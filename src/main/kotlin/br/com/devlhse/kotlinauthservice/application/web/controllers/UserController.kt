@@ -5,6 +5,7 @@ import br.com.devlhse.kotlinauthservice.domain.model.request.UserRequest
 import br.com.devlhse.kotlinauthservice.domain.services.UserService
 import br.com.devlhse.kotlinauthservice.exception.NotFoundException
 import io.javalin.http.Context
+import org.apache.logging.log4j.LogManager
 import org.eclipse.jetty.http.HttpStatus
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -13,6 +14,7 @@ import org.koin.core.inject
 object UserController : KoinComponent {
 
     private val userService by inject<UserService>()
+    private val logger = LogManager.getLogger(UserController::class.java.name)
 
     fun getAllUsers(ctx: Context) {
         ctx.json(userService.findAll())
@@ -24,7 +26,7 @@ object UserController : KoinComponent {
             .check({ !it.user?.password.isNullOrBlank() })
             .get().user?.also { user ->
             userService.authenticate(user).apply {
-                ctx.json(UserRequest(this))
+                ctx.json(this)
             }
         }
     }
@@ -43,6 +45,7 @@ object UserController : KoinComponent {
         try {
             ctx.json(userService.findById(ctx.pathParam("user-id").toInt())!!)
         } catch (e: Exception) {
+            logger.error("Erro ao consultar usuário pelo id $e")
             throw NotFoundException("User Not Found")
         }
     }

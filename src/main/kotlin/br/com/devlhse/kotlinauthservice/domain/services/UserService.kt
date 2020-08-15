@@ -4,6 +4,7 @@ import br.com.devlhse.kotlinauthservice.config.Roles
 import br.com.devlhse.kotlinauthservice.domain.common.utils.Cipher
 import br.com.devlhse.kotlinauthservice.domain.common.utils.JwtProvider
 import br.com.devlhse.kotlinauthservice.domain.model.entity.User
+import br.com.devlhse.kotlinauthservice.domain.model.response.UserLoginResponse
 import br.com.devlhse.kotlinauthservice.domain.model.response.UserResponse
 import br.com.devlhse.kotlinauthservice.domain.repositories.UserRepository
 import br.com.devlhse.kotlinauthservice.exception.ConflictException
@@ -31,10 +32,10 @@ class UserService(private val cipher: Cipher,
         userRepository.save(user.copy(password = String(base64Encoder.encode(cipher.encrypt(user.password)))))
     }
 
-    fun authenticate(user: User): User {
+    fun authenticate(user: User): UserLoginResponse {
         val userFound = userRepository.findByEmail(user.email)
         if (userFound?.password == String(base64Encoder.encode(cipher.encrypt(user.password)))) {
-            return userFound.copy(token = generateJwtToken(userFound), password = "**********")
+            return UserLoginResponse(accessToken = generateJwtToken(userFound)!!)
         }
         logger.error("Erro ao na tentativa de login usuário com email: ${user.email}")
         throw UnauthorizedException("Invalid email or password !")

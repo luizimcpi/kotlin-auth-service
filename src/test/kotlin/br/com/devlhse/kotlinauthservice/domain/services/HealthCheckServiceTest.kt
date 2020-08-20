@@ -41,7 +41,7 @@ class HealthCheckServiceTest {
         val healthCheckService = HealthCheckService(repository)
         val expectedResponse = HealthCheckCompleteResponse(status = "OK", databaseStatus = "OK")
 
-        every { repository.check() } returns "OK"
+        every { repository.status() } returns true
 
         assertEquals(expectedResponse.status, healthCheckService.statusComplete().status)
         assertEquals(expectedResponse.databaseStatus, healthCheckService.statusComplete().databaseStatus)
@@ -51,9 +51,9 @@ class HealthCheckServiceTest {
     fun `when execute health check status complete and database is down should return error`() {
 
         val healthCheckService = HealthCheckService(repository)
-        val expectedResponse = HealthCheckCompleteResponse(status = "ERROR", databaseStatus = "ERROR")
+        val expectedResponse = HealthCheckCompleteResponse(status = "UNAVAILABLE", databaseStatus = "UNAVAILABLE")
 
-        every { repository.check() } returns "ERROR"
+        every { repository.status() } returns false
 
         assertEquals(expectedResponse.status, healthCheckService.statusComplete().status)
         assertEquals(expectedResponse.databaseStatus, healthCheckService.statusComplete().databaseStatus)

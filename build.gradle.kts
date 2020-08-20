@@ -1,3 +1,5 @@
+import java.time.LocalDateTime
+
 val mainClass = "br.com.devlhse.kotlinauthservice.application.ApplicationMain"
 
 buildscript {
@@ -45,6 +47,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:0.25.1")
     implementation("org.apache.logging.log4j:log4j-api:2.13.1")
     implementation("org.apache.logging.log4j:log4j-core:2.13.1")
+    implementation("com.jcabi:jcabi-manifests:1.1")
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.koin:koin-test:2.1.5")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
@@ -85,6 +88,7 @@ tasks.jar {
     manifest {
         attributes("Main-Class" to mainClass)
         attributes("Package-Version" to archiveVersion)
+        attributes("Build-Date" to LocalDateTime.now())
     }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) } )

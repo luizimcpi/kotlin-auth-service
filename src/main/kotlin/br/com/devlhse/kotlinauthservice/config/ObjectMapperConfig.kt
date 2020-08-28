@@ -1,6 +1,7 @@
 package br.com.devlhse.kotlinauthservice.config
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.module.SimpleModule
@@ -17,6 +18,7 @@ object ObjectMapperConfig {
         this.registerKotlinModule()
         this.registerModule(dateModule())
         this.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
 
     private fun dateModule(): SimpleModule = with(SimpleModule()) {

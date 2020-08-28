@@ -48,6 +48,8 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.13.1")
     implementation("org.apache.logging.log4j:log4j-core:2.13.1")
     implementation("com.jcabi:jcabi-manifests:1.1")
+    implementation("com.github.kittinunf.fuel:fuel:2.2.3")
+    implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.3")
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.koin:koin-test:2.1.5")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")

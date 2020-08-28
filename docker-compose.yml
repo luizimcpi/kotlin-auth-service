@@ -10,6 +10,7 @@ services:
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
       - AUTH_SECRET=devlhse_auth_secret
+      - VIACEP_URL=https://viacep.com.br/ws/
     container_name: kotlin-auth-service-app
     ports:
       - 7000:7000

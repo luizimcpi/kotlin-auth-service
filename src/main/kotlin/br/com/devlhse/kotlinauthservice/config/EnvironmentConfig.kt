@@ -18,6 +18,7 @@ class EnvironmentConfig (configuration: Configuration = EnvironmentVariables()){
     val databasePassword = configuration[DATABASE_PASSWORD]
     val authSecret = configuration[AUTH_SECRET]
     val headerTokenName = configuration.getOrElse(HEADER_TOKEN_NAME, DEFAULT_HEADER_TOKEN_NAME)
+    val viaCepUrl = configuration[VIACEP_URL]
 
     companion object {
         private val SERVER_PORT by intType
@@ -27,6 +28,7 @@ class EnvironmentConfig (configuration: Configuration = EnvironmentVariables()){
         private val DATABASE_PASSWORD by stringType
         private val AUTH_SECRET by stringType
         private val HEADER_TOKEN_NAME by stringType
+        private val VIACEP_URL by stringType
         private const val DEFAULT_SERVER_PORT = 7000
         private const val DEFAULT_ENABLE_DEBUG_VALUE = false
         private const val DEFAULT_HEADER_TOKEN_NAME = "Authorization"

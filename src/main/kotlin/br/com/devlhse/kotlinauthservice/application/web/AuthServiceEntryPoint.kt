@@ -1,5 +1,6 @@
 package br.com.devlhse.kotlinauthservice.application.web
 
+import br.com.devlhse.kotlinauthservice.application.web.routes.AddressRoutes
 import br.com.devlhse.kotlinauthservice.application.web.routes.HealthRoutes
 import br.com.devlhse.kotlinauthservice.application.web.routes.UserRoutes
 import br.com.devlhse.kotlinauthservice.config.AuthConfig
@@ -7,6 +8,7 @@ import br.com.devlhse.kotlinauthservice.config.DatabaseConfig
 import br.com.devlhse.kotlinauthservice.config.EnvironmentConfig
 import br.com.devlhse.kotlinauthservice.config.ErrorExceptionMapping
 import br.com.devlhse.kotlinauthservice.config.ObjectMapperConfig
+import br.com.devlhse.kotlinauthservice.config.modules.clientHttpModule
 import br.com.devlhse.kotlinauthservice.config.modules.configModule
 import br.com.devlhse.kotlinauthservice.config.modules.repositoryModule
 import br.com.devlhse.kotlinauthservice.config.modules.securityModule
@@ -25,7 +27,7 @@ object AuthServiceEntryPoint : KoinComponent {
             // use Koin logger
             printLogger()
             // declare modules
-            modules(listOf(securityModule, configModule, serviceModule, repositoryModule))
+            modules(listOf(securityModule, configModule, serviceModule, repositoryModule, clientHttpModule))
         }
 
         val app = Javalin.create {
@@ -43,6 +45,7 @@ object AuthServiceEntryPoint : KoinComponent {
         app.routes {
             UserRoutes.init()
             HealthRoutes.init()
+            AddressRoutes.init()
         }
     }
 }

@@ -53,6 +53,9 @@ dependencies {
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.koin:koin-test:2.1.5")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
+    testImplementation("com.github.tomakehurst:wiremock:2.27.1")
+    testImplementation("io.rest-assured:rest-assured:4.3.0")
+    testImplementation("com.opentable.components:otj-pg-embedded:0.13.1")
 }
 
 tasks.jacocoTestReport {

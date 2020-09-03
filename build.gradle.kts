@@ -56,6 +56,7 @@ dependencies {
     testImplementation("com.github.tomakehurst:wiremock:2.27.1")
     testImplementation("io.rest-assured:rest-assured:4.3.0")
     testImplementation("com.opentable.components:otj-pg-embedded:0.13.1")
+    testImplementation("org.flywaydb:flyway-core:6.4.1")
 }
 
 tasks.jacocoTestReport {
@@ -96,9 +97,11 @@ tasks.jar {
         attributes("Build-Date" to LocalDateTime.now())
     }
 
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) } )
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     from(sourceSets.main.get().output)
 }
+
+tasks.withType<Test> { loadEnv(this, file("test.env")) }
 
 tasks.test {
     useJUnitPlatform()
@@ -111,6 +114,20 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+}
+
+fun loadEnv(testTask: Test, file: File) {
+    if (!file.exists()) throw IllegalArgumentException("failed to load envs from file, ${file.name}")
+
+    file.readLines().forEach { line ->
+        if (line.isBlank() || line.startsWith("#")) return@forEach
+        line.split("=", limit = 2)
+            .takeIf { it.size == 2 && !it[0].isBlank() }
+            ?.run { Pair(this[0].trim(), this[1].trim()) }
+            ?.run {
+                testTask.environment(this.first, this.second)
+            }
     }
 }
 

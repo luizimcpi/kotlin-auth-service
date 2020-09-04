@@ -4,10 +4,10 @@ import java.io.File
 
 object TestUtils {
 
-    fun viaCepResponseSample(sampleName: String) = readSample("$sampleName")
+    fun viaCepResponseSample(sampleName: String) = readSample("viacep/responses/$sampleName")
 
     private fun readSample(path: String): String {
-        val fullPath = "/samples/$path.json"
+        val fullPath = "/samples/$path"
         val uri = TestUtils::class.java.getResource(fullPath).toURI()
         return File(uri).readText(Charsets.UTF_8)
     }

@@ -1,5 +1,7 @@
 # kotlin-auth-service
 
+[![Build Status](https://travis-ci.org/luizimcpi/kotlin-auth-service.svg?branch=master)](https://travis-ci.org/luizimcpi/kotlin-auth-service)
+
 ## SETUP DEV
 
 ## SET Environment Variables

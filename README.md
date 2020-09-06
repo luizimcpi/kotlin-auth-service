@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/luizimcpi/kotlin-auth-service.svg?branch=master)](https://travis-ci.org/luizimcpi/kotlin-auth-service)
 
+[![codecov](https://codecov.io/gh/luizimcpi/kotlin-auth-service/branch/master/graph/badge.svg)](https://codecov.io/gh/luizimcpi/kotlin-auth-service)
+
 ## SETUP DEV
 
 ## SET Environment Variables

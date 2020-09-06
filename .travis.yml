@@ -3,3 +3,10 @@ jdk:
   - openjdk8
 before_install:
   - chmod +x gradlew
+env:
+  global:
+    - CODECOV_TOKEN=374fa3cd-d594-4f71-87ba-015cd014a0bd
+script:
+  - ./gradlew test
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

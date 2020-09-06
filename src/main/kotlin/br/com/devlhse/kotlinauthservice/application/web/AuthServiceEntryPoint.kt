@@ -20,7 +20,9 @@ import org.koin.core.context.startKoin
 import org.koin.core.inject
 
 object AuthServiceEntryPoint : KoinComponent {
+    private val environmentConfig: EnvironmentConfig by inject()
     private val authConfig: AuthConfig by inject()
+    private lateinit var app: Javalin
 
     fun init() {
         startKoin {
@@ -30,8 +32,8 @@ object AuthServiceEntryPoint : KoinComponent {
             modules(listOf(securityModule, configModule, serviceModule, repositoryModule, clientHttpModule))
         }
 
-        val app = Javalin.create {
-            if(EnvironmentConfig().enableDebug) {
+        app = Javalin.create {
+            if (EnvironmentConfig().enableDebug) {
                 it.enableDevLogging()
             }
         }.apply {
@@ -40,12 +42,16 @@ object AuthServiceEntryPoint : KoinComponent {
 
         authConfig.configure(app)
         ErrorExceptionMapping.register(app)
-        DatabaseConfig.connect()
+        DatabaseConfig(environmentConfig).connect()
 
         app.routes {
             UserRoutes.init()
             HealthRoutes.init()
             AddressRoutes.init()
         }
+    }
+
+    fun stop() {
+        app.stop()
     }
 }

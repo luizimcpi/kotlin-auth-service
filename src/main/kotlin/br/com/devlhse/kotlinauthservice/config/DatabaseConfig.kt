@@ -5,13 +5,13 @@ import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 
 
-object DatabaseConfig {
+class DatabaseConfig(private val environment: EnvironmentConfig) {
     fun connect() {
-        val config = HikariConfig()
-        config.jdbcUrl = EnvironmentConfig().databaseUrl
-        config.username = EnvironmentConfig().databaseUser
-        config.password = EnvironmentConfig().databasePassword
-
+        val config = HikariConfig().apply {
+            jdbcUrl = environment.databaseUrl
+            username = environment.databaseUser
+            password = environment.databasePassword
+        }
         Database.connect(HikariDataSource(config))
     }
 }

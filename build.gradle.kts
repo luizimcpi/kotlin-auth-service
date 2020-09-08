@@ -72,7 +72,7 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = "0.59".toBigDecimal()
+                minimum = "0.77".toBigDecimal()
             }
         }
     }
@@ -85,7 +85,8 @@ tasks.jacocoTestCoverageVerification {
             exclude("br/com/devlhse/kotlinauthservice/domain/common/**")
             exclude("br/com/devlhse/kotlinauthservice/domain/repositories/**")
             exclude("br/com/devlhse/kotlinauthservice/exception/**")
-            exclude("br/com/devlhse/kotlinauthservice/resources/**")
+            exclude("br/com/devlhse/kotlinauthservice/resources/tables/**")
+            exclude("br/com/devlhse/kotlinauthservice/resources/clients/**")
         }
     )
 }

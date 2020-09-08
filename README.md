@@ -94,6 +94,7 @@ File requests.rest can be open with plugin REST client in VSCode
 [Junit 5](https://junit.org/junit5/)
 
 ## TO DO
+- [ ] change userId to LONG
 - [ ] prevent an user can consult another users information
 - [ ] create and configure arch tests ArchUnit
 - [ ] create component tests for repositories and other classes that has external communication

@@ -28,4 +28,5 @@ ignore:
   - "src/main/kotlin/br/com/devlhse/kotlinauthservice/domain/repositories/**/*"
   - "src/main/kotlin/br/com/devlhse/kotlinauthservice/domain/services/UserService.kt"
   - "src/main/kotlin/br/com/devlhse/kotlinauthservice/exception"
-  - "src/main/kotlin/br/com/devlhse/kotlinauthservice/resources/**/*"
+  - "src/main/kotlin/br/com/devlhse/kotlinauthservice/resources/tables/**/*"
+  - "src/main/kotlin/br/com/devlhse/kotlinauthservice/resources/clients/**/*"

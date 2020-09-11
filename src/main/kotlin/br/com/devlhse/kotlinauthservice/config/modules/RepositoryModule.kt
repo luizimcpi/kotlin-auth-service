@@ -1,6 +1,8 @@
 package br.com.devlhse.kotlinauthservice.config.modules
 
+import br.com.devlhse.kotlinauthservice.domain.repositories.ContactRepository
 import br.com.devlhse.kotlinauthservice.domain.repositories.DatabaseHealthRepository
+import br.com.devlhse.kotlinauthservice.resources.repositories.ContactRepositoryImpl
 import br.com.devlhse.kotlinauthservice.resources.repositories.HealthRepository
 import org.koin.dsl.module
 
@@ -9,4 +11,5 @@ val repositoryModule = module {
         br.com.devlhse.kotlinauthservice.resources.repositories.UserRepository()
     }
     single<DatabaseHealthRepository> { HealthRepository() }
+    single<ContactRepository> { ContactRepositoryImpl() }
 }

@@ -25,7 +25,7 @@ class UserRepositoryComponentTest: KoinTest {
     @Test
     fun `when findById should return user with success`() {
         val path = "find_by_id"
-        val validId = 2
+        val validId = 2L
         PostgresMock.executeScripts("$path/001.sql")
         val user = repository.findById(validId)
         assertEquals(validId, user!!.id)
@@ -51,7 +51,7 @@ class UserRepositoryComponentTest: KoinTest {
     @Test
     fun `when delete an user should does not throw exception`() {
         val path = "delete"
-        val validId = 2
+        val validId = 2L
         PostgresMock.executeScripts("$path/001.sql")
         assertDoesNotThrow {
             repository.delete(validId)

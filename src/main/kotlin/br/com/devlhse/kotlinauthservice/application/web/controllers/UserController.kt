@@ -43,7 +43,7 @@ object UserController : KoinComponent {
 
     fun getUser(ctx: Context) {
         try {
-            ctx.json(userService.findById(ctx.pathParam("user-id").toInt())!!)
+            ctx.json(userService.findById(ctx.pathParam("user-id").toLong())!!)
         } catch (e: Exception) {
             logger.error("Erro ao consultar usuário pelo id $e")
             throw NotFoundException("User Not Found")
@@ -55,14 +55,14 @@ object UserController : KoinComponent {
             .check({ it.user?.email?.isEmailValid() ?: true })
             .check({ !it.user?.password.isNullOrBlank() })
             .get().user?.also { user ->
-            userService.update(ctx.pathParam("user-id").toInt(), user)
+            userService.update(ctx.pathParam("user-id").toLong(), user)
             ctx.status(HttpStatus.CREATED_201)
         }
         ctx.status(HttpStatus.NO_CONTENT_204)
     }
 
     fun deleteUser(ctx: Context) {
-        userService.delete(ctx.pathParam("user-id").toInt())
+        userService.delete(ctx.pathParam("user-id").toLong())
         ctx.status(HttpStatus.NO_CONTENT_204)
     }
 }

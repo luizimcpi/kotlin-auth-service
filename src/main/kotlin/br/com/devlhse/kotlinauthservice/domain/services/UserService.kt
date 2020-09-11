@@ -41,15 +41,15 @@ class UserService(private val cipher: Cipher,
         throw UnauthorizedException("Invalid email or password !")
     }
 
-    fun findById(id: Int): UserResponse? {
+    fun findById(id: Long): UserResponse? {
         return userRepository.findById(id)
     }
 
-    fun update(id: Int, user: User) {
+    fun update(id: Long, user: User) {
         userRepository.update(id, user)
     }
 
-    fun delete(id: Int) {
+    fun delete(id: Long) {
         userRepository.delete(id)
     }
 

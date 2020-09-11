@@ -134,7 +134,7 @@ class UserServiceTest {
     @Test
     fun `when receive valid id should call repository to find by id`() {
 
-        val validUserId = 1
+        val validUserId = 1L
         val userService =
             UserService(
                 cipher,
@@ -153,7 +153,7 @@ class UserServiceTest {
     @Test
     fun `when receive valid id to delete should call repository to find and delete`() {
 
-        val validUserId = 1
+        val validUserId = 1L
         val userService =
             UserService(
                 cipher,

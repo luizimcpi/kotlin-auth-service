@@ -49,7 +49,7 @@ class UserRepository: UserRepository {
         }
     }
 
-    override fun findById(id: Long): UserResponse? {
+    override fun findById(id: Int): UserResponse? {
         return transaction {
              UserTable.select { UserTable.id eq id }.firstOrNull()?.let {
                  logger.info("User has been found with id: $id")
@@ -66,7 +66,7 @@ class UserRepository: UserRepository {
         }
     }
 
-    override fun update(id: Long, user: User) {
+    override fun update(id: Int, user: User) {
         transaction {
             UserTable.update({ UserTable.id eq id }) {
                 it[name] = user.name
@@ -77,7 +77,7 @@ class UserRepository: UserRepository {
         logger.info("User has been updated with id: $id")
     }
 
-    override fun delete(id: Long) {
+    override fun delete(id: Int) {
         transaction {
             UserTable.deleteWhere { UserTable.id eq id }
         }

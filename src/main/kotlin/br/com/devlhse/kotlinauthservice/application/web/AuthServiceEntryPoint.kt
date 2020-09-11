@@ -44,6 +44,25 @@ object AuthServiceEntryPoint : KoinComponent {
         ErrorExceptionMapping.register(app)
         DatabaseConfig(environmentConfig).connect()
 
+//        transaction {
+//            val generatedUserId = UserTable.insertAndGetId {
+//                it[name] = "User teste"
+//                it[email] = "teste@teste.com.br"
+//                it[password] = "teste1234"
+//                it[createdAt] = LocalDateTime.now()
+//                it[updatedAt] = LocalDateTime.now()
+//            }
+//
+//            val contactId = ContactTable.insertAndGetId {
+//                it[name] = "teste contact"
+//                it[email] = "teste@teste.com.br"
+//                it[phone] = "551399177777"
+//                it[userId] = generatedUserId.value
+//                it[UserTable.createdAt] = LocalDateTime.now()
+//                it[UserTable.updatedAt] = LocalDateTime.now()
+//            }
+//        }
+
         app.routes {
             UserRoutes.init()
             HealthRoutes.init()

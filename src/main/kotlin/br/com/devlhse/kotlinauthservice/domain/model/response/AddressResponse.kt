@@ -10,5 +10,6 @@ class AddressResponse(
     val uf: String? = "",
     val ibge: String? = "",
     val gia: String? = "",
-    val ddd: String? = ""
+    val ddd: String? = "",
+    val siafi: String? = ""
 )

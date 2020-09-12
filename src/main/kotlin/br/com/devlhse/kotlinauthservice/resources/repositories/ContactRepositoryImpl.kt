@@ -17,6 +17,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.math.ceil
 
+@SuppressWarnings("TooGenericExceptionCaught")
 class ContactRepositoryImpl: ContactRepository {
 
     private val logger = LogManager.getLogger(ContactRepositoryImpl::class.java.name)
@@ -28,11 +29,12 @@ class ContactRepositoryImpl: ContactRepository {
 
         val selectOrderBy = query.orderBy(ContactTable.id)
 
-        val contacts = if( totalPages > 0 ) findBy(selectOrderBy, pageable) else emptyList()
+        val contacts = if( totalPages > 0 ) transaction { findBy(selectOrderBy, pageable) } else emptyList()
 
         return ContactPageable(
             contacts, pageable.copy(totalPages = totalPages)
         )
+
     }
 
     private fun findBy(query: Query, pageable: Pageable): List<Contact> = try {
@@ -46,7 +48,6 @@ class ContactRepositoryImpl: ContactRepository {
         }.map { it.toEntity() }
     } catch (ex: Exception) {
         logger.error("error in page: ${pageable.pageNumber} message: ${ex.message}")
-        println("deu zica...")
         emptyList()
     }
 

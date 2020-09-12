@@ -16,8 +16,9 @@ class ContactRepositoryComponentTest: KoinTest {
     @Test
     fun `when findByUser should return paginated contacts of an user with success`() {
         val path = "find_paginated_contacts"
-        val validPageable = Pageable(0, 5)
+        val validPageable = Pageable(1, 5)
         PostgresMock.executeScripts("$path/001.sql")
+
         repository.findByUser(1, pageable = validPageable).also {
             assertEquals(5, it.contacts.size)
             assertEquals(2, it.pageable.totalPages)

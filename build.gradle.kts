@@ -57,6 +57,7 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:4.3.0")
     testImplementation("com.opentable.components:otj-pg-embedded:0.13.1")
     testImplementation("org.flywaydb:flyway-core:6.4.1")
+    testImplementation("org.elasticmq:elasticmq-rest-sqs_2.12:0.14.6")
 }
 
 tasks.jacocoTestReport {

@@ -13,7 +13,7 @@ import org.koin.test.KoinTest
 @ExtendWith(ComponentTestExtension::class)
 class UserRepositoryComponentTest: KoinTest {
 
-    private val repository =  UserRepository()
+    private val repository =  UserRepositoryImpl()
 
     @Test
     fun `when findall should return users with success`() {

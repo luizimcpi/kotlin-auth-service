@@ -17,7 +17,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.time.LocalDateTime
 
-class UserRepository: UserRepository {
+class UserRepositoryImpl: UserRepository {
 
     private val logger = LogManager.getLogger(UserRepository::class.java.name)
 

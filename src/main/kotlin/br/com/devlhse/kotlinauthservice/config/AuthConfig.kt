@@ -23,14 +23,14 @@ class AuthConfig(private val jwtProvider: JwtProvider, private val environmentCo
         }
     }
 
-    private fun getJwtTokenHeader(ctx: Context): DecodedJWT? {
+    fun getJwtTokenHeader(ctx: Context): DecodedJWT? {
         val tokenHeader = ctx.header(environmentConfig.headerTokenName)?.substringAfter("Bearer")?.trim()
             ?: return null
 
         return jwtProvider.decodeJWT(tokenHeader)
     }
 
-    private fun getEmail(jwtToken: DecodedJWT?): String? {
+    fun getEmail(jwtToken: DecodedJWT?): String? {
         return jwtToken?.subject
     }
 

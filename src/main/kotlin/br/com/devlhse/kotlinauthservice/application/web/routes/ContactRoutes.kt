@@ -7,7 +7,7 @@ import io.javalin.core.security.SecurityUtil.roles
 
 object ContactRoutes {
     fun init() {
-        ApiBuilder.path("users/:user-id/contacts") {
+        ApiBuilder.path("contacts") {
             ApiBuilder.get(ContactController::findPaginatedContactsbyUser, roles(Roles.AUTHENTICATED))
 //            ApiBuilder.post(ContactController::createContact, roles(Roles.AUTHENTICATED))
 //            ApiBuilder.path(":contact-id") {

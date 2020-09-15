@@ -6,9 +6,7 @@ import br.com.devlhse.kotlinauthservice.domain.services.UserService
 import org.koin.dsl.module
 
 val serviceModule = module {
-    single { UserService(get(), get(), get())
-    }
+    single { UserService(get(), get(), get()) }
     single { HealthCheckService(get()) }
-    single { ContactService(get())
-    }
+    single { ContactService(get(), get()) }
 }

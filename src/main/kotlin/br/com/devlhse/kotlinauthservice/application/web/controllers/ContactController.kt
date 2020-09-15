@@ -1,7 +1,9 @@
 package br.com.devlhse.kotlinauthservice.application.web.controllers
 
+import br.com.devlhse.kotlinauthservice.config.AuthConfig
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
 import br.com.devlhse.kotlinauthservice.domain.services.ContactService
+import br.com.devlhse.kotlinauthservice.exception.NotFoundException
 import io.javalin.http.Context
 import org.apache.logging.log4j.LogManager
 import org.koin.core.KoinComponent
@@ -10,15 +12,28 @@ import org.koin.core.inject
 @SuppressWarnings("TooGenericExceptionCaught")
 object ContactController : KoinComponent {
 
+    private val authConfig by inject<AuthConfig>()
     private val contactService by inject<ContactService>()
     private val logger = LogManager.getLogger(ContactController::class.java.name)
 
     fun findPaginatedContactsbyUser(ctx: Context) {
-        val userId = ctx.pathParam("user-id").toInt()
         val pageSize = ctx.queryParam("pageSize", Int::class.java,"20").get()
         val pageNumber = ctx.queryParam("pageNumber", Long::class.java).get()
         val pageable = Pageable(pageNumber = pageNumber, pageSize = pageSize)
-        ctx.json(contactService.findPaginatedContacts(userId, pageable))
+        val decodedJwt = authConfig.getJwtTokenHeader(ctx)
+
+        try {
+            authConfig.getEmail(decodedJwt)?.let { recoveredEmail ->
+                logger.info(
+                    "Start Get Paginated contacts of user with email $recoveredEmail " +
+                            "with max itens per page: $pageSize and pageNumber: $pageNumber "
+                )
+                ctx.json(contactService.findPaginatedContacts(recoveredEmail, pageable))
+            }
+        }catch(e: Exception) {
+            logger.error("Erro ao consultar contatos do usuario $e")
+            throw NotFoundException("User contacts Not Found")
+        }
     }
 
 

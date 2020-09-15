@@ -3,16 +3,22 @@ package br.com.devlhse.kotlinauthservice.domain.services
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
 import br.com.devlhse.kotlinauthservice.domain.model.response.ContactPageable
 import br.com.devlhse.kotlinauthservice.domain.repositories.ContactRepository
+import br.com.devlhse.kotlinauthservice.domain.repositories.UserRepository
+import br.com.devlhse.kotlinauthservice.exception.NotFoundException
 import org.apache.logging.log4j.LogManager
 
-class ContactService(private val contactRepository: ContactRepository) {
+class ContactService(private val userRepository: UserRepository, private val contactRepository: ContactRepository) {
 
     private val logger = LogManager.getLogger(ContactService::class.java.name)
 
-    fun findPaginatedContacts(userId: Int, pageable: Pageable): ContactPageable {
-        logger.info("Iniciando busca de contatos do usuario: $userId com paginação: " +
+    fun findPaginatedContacts(userRecoveredEmail: String, pageable: Pageable): ContactPageable {
+        logger.info("Iniciando busca de contatos do usuario: $userRecoveredEmail com paginação: " +
                 "${pageable.pageSize} e ${pageable.pageNumber}")
-        return contactRepository.findByUser(userId, pageable)
+        userRepository.findByEmail(userRecoveredEmail)?.let { user ->
+            return contactRepository.findByUser(user.id!!, pageable)
+        }
+        logger.error("Não foi possivel realizar a busca de contatos do usuario: $userRecoveredEmail ")
+        throw NotFoundException("Contacts not found")
     }
 
 //    fun save(user: User) {

@@ -52,6 +52,6 @@ class ContactControllerComponentTest: KoinTest {
 
     companion object {
         private const val LOGIN_ROUTE = "/users/login"
-        private const val VALID_CONTACTS_QUERY_ROUTE = "/users/1/contacts?pageNumber=1&pageSize=5"
+        private const val VALID_CONTACTS_QUERY_ROUTE = "/contacts?pageNumber=1&pageSize=5"
     }
 }

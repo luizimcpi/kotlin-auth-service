@@ -50,6 +50,8 @@ dependencies {
     implementation("com.jcabi:jcabi-manifests:1.1")
     implementation("com.github.kittinunf.fuel:fuel:2.2.3")
     implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.3")
+    implementation("com.amazonaws:amazon-sqs-java-messaging-lib:1.0.8")
+
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.koin:koin-test:2.1.5")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")

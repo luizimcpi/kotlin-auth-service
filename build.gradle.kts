@@ -67,6 +67,17 @@ tasks.jacocoTestReport {
     }
 }
 
+val coverageExcludePaths = listOf(
+    "br/com/devlhse/kotlinauthservice/application/**",
+    "br/com/devlhse/kotlinauthservice/config/**",
+    "br/com/devlhse/kotlinauthservice/domain/model/**",
+    "br/com/devlhse/kotlinauthservice/domain/common/**",
+    "br/com/devlhse/kotlinauthservice/domain/repositories/**",
+    "br/com/devlhse/kotlinauthservice/exception/**",
+    "br/com/devlhse/kotlinauthservice/resources/tables/**",
+    "br/com/devlhse/kotlinauthservice/resources/clients/**"
+)
+
 tasks.jacocoTestCoverageVerification {
     dependsOn(":test")
     violationRules {
@@ -79,14 +90,7 @@ tasks.jacocoTestCoverageVerification {
 
     classDirectories.setFrom(
         sourceSets.main.get().output.asFileTree.matching {
-            exclude("br/com/devlhse/kotlinauthservice/application/**")
-            exclude("br/com/devlhse/kotlinauthservice/config/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/model/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/common/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/repositories/**")
-            exclude("br/com/devlhse/kotlinauthservice/exception/**")
-            exclude("br/com/devlhse/kotlinauthservice/resources/tables/**")
-            exclude("br/com/devlhse/kotlinauthservice/resources/clients/**")
+            exclude(coverageExcludePaths)
         }
     )
 }

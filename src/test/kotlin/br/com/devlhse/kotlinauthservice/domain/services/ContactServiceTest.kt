@@ -76,4 +76,26 @@ class ContactServiceTest {
         }
     }
 
+    @Test
+    fun `when find contact by id should call repository to find an user contact`() {
+
+        val contactService =
+            ContactService(
+                userRepository,
+                repository
+            )
+
+
+        val userRecoveredEmail = "teste@teste.com"
+        val validUser = User("teste", userRecoveredEmail, "teste1234", "123456", 1)
+
+        every{ userRepository.findByEmail(userRecoveredEmail) } returns validUser
+
+        contactService.findById(userRecoveredEmail, 1)
+
+        verify {
+            repository.findById(1, 1)
+        }
+    }
+
 }

@@ -59,15 +59,18 @@ object ContactController : KoinComponent {
             throw NotFoundException("Contact insertion error")
         }
     }
-//
-//    fun getUser(ctx: Context) {
-//        try {
-//            ctx.json(userService.findById(ctx.pathParam("user-id").toInt())!!)
-//        } catch (e: Exception) {
-//            logger.error("Erro ao consultar usuário pelo id $e")
-//            throw NotFoundException("User Not Found")
-//        }
-//    }
+
+    fun getContactById(ctx: Context) {
+        val decodedJwt = authConfig.getJwtTokenHeader(ctx)
+        try {
+            authConfig.getEmail(decodedJwt)?.let { recoveredEmail ->
+                ctx.json(contactService.findById(recoveredEmail, ctx.pathParam("contact-id").toInt())!!)
+            }
+        } catch (e: Exception) {
+            logger.error("Erro ao consultar contato pelo id $e")
+            throw NotFoundException("Contact Not Found")
+        }
+    }
 //
 //    fun updateUser(ctx: Context) {
 //        ctx.bodyValidator<UserRequest>()

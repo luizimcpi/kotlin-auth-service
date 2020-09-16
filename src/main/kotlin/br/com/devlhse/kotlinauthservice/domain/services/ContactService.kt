@@ -3,12 +3,14 @@ package br.com.devlhse.kotlinauthservice.domain.services
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
 import br.com.devlhse.kotlinauthservice.domain.model.entity.Contact
 import br.com.devlhse.kotlinauthservice.domain.model.response.ContactPageable
+import br.com.devlhse.kotlinauthservice.domain.model.response.ContactResponse
 import br.com.devlhse.kotlinauthservice.domain.repositories.ContactRepository
 import br.com.devlhse.kotlinauthservice.domain.repositories.UserRepository
 import br.com.devlhse.kotlinauthservice.exception.NotFoundException
 import org.apache.logging.log4j.LogManager
 
-class ContactService(private val userRepository: UserRepository, private val contactRepository: ContactRepository) {
+class ContactService(private val userRepository: UserRepository,
+                     private val contactRepository: ContactRepository) {
 
     private val logger = LogManager.getLogger(ContactService::class.java.name)
 
@@ -27,19 +29,13 @@ class ContactService(private val userRepository: UserRepository, private val con
             contactRepository.save(contact.copy(userId = user.id))
         }
     }
-//
-//    fun authenticate(user: User): UserLoginResponse {
-//        val userFound = userRepository.findByEmail(user.email)
-//        if (userFound?.password == String(base64Encoder.encode(cipher.encrypt(user.password)))) {
-//            return UserLoginResponse(accessToken = generateJwtToken(userFound)!!)
-//        }
-//        logger.error("Erro ao na tentativa de login usuário com email: ${user.email}")
-//        throw UnauthorizedException("Invalid email or password !")
-//    }
-//
-//    fun findById(id: Int): UserResponse? {
-//        return userRepository.findById(id)
-//    }
+
+    fun findById(userRecoveredEmail: String, id: Int): ContactResponse? {
+        userRepository.findByEmail(userRecoveredEmail)?.let { user ->
+            return contactRepository.findById(user.id!!, id)
+        }
+        throw NotFoundException("Error when find contact with id: $id")
+    }
 //
 //    fun update(id: Int, user: User) {
 //        userRepository.update(id, user)

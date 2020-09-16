@@ -11,6 +11,7 @@ import io.restassured.http.ContentType.JSON
 import io.restassured.http.ContentType.TEXT
 import io.restassured.specification.RequestSpecification
 import org.apache.http.HttpStatus
+import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -85,6 +86,32 @@ class ContactControllerComponentTest: KoinTest {
             .and().contentType(JSON)
     }
 
+    @Test
+    fun `when contact controller request to find contact by id of an user should return success`() {
+        val path = "find_paginated_contacts"
+        PostgresMock.executeScripts("$path/002.sql")
+
+        paginatedRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().get("$VALID_CONTACTS_ROUTE/1")
+            .then().statusCode(HttpStatus.SC_OK)
+            .and().contentType(JSON)
+            .body("id", Matchers.equalTo(1))
+            .body("name", Matchers.equalTo("teste contact 1"))
+            .body("email", Matchers.equalTo("teste@teste.com.br"))
+            .body("phone", Matchers.equalTo("551399177777"))
+    }
+
+    @Test
+    fun `when contact controller request to find contact by id of another user should return error`() {
+        val path = "find_paginated_contacts"
+        PostgresMock.executeScripts("$path/002.sql")
+
+        paginatedRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().get("$VALID_CONTACTS_ROUTE/11")
+            .then().statusCode(HttpStatus.SC_NOT_FOUND)
+            .and().contentType(JSON)
+
+    }
 
     companion object {
         private const val LOGIN_ROUTE = "/users/login"

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -75,6 +76,17 @@ class ContactRepositoryImpl: ContactRepository {
             }
 
             logger.info("Contact has been inserted with id: $contactId")
+        }
+    }
+
+    override fun findById(userId: Int, id: Int): ContactResponse? {
+        return transaction {
+            ContactTable.select {
+                (ContactTable.id eq id) and (ContactTable.userId eq userId)
+            }.firstOrNull()?.let {
+                logger.info("Contact has been found with id: $id")
+                ContactTable.toContactResponse(it)
+            }
         }
     }
 }

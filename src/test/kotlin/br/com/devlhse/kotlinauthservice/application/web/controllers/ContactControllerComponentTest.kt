@@ -11,6 +11,7 @@ import io.restassured.http.ContentType.JSON
 import io.restassured.http.ContentType.TEXT
 import io.restassured.specification.RequestSpecification
 import org.apache.http.HttpStatus
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.koin.test.KoinTest
@@ -23,6 +24,8 @@ class ContactControllerComponentTest: KoinTest {
     private val validRequestContentType = "application/json"
     private val validLoginBody = "/requests/valid_body_user_request.json".getResourceContent()
     private val validContactBody = "/requests/valid_body_contact_request.json".getResourceContent()
+    private val invalidContactBody = "/requests/invalid_body_contact_request.json".getResourceContent()
+    private lateinit var accessToken: String
 
     private val loginRequestSpecification: RequestSpecification = RestAssured.given()
         .baseUri(baseUrl)
@@ -38,16 +41,25 @@ class ContactControllerComponentTest: KoinTest {
         .baseUri(baseUrl)
         .body(validContactBody)
 
+    private val invalidContactRequestSpecification: RequestSpecification = RestAssured.given()
+        .baseUri(baseUrl)
+        .body(invalidContactBody)
 
-    @Test
-    fun `when contact controller request to find contacts of an user should return success`() {
-        val path = "find_paginated_contacts"
+    @BeforeEach
+    fun setUp(){
+        val path = "create_contact"
         PostgresMock.executeScripts("$path/001.sql")
 
         val jsonLoginResponse = loginRequestSpecification.post(LOGIN_ROUTE).body.asString()
         val userLoginResponse = ObjectMapperConfig.jsonObjectMapper.
         readValue(jsonLoginResponse, UserLoginResponse::class.java)
-        val accessToken = userLoginResponse.accessToken
+        accessToken = userLoginResponse.accessToken
+    }
+
+    @Test
+    fun `when contact controller request to find contacts of an user should return success`() {
+        val path = "find_paginated_contacts"
+        PostgresMock.executeScripts("$path/002.sql")
 
         paginatedRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
             .`when`().get(VALID_CONTACTS_QUERY_ROUTE)
@@ -57,17 +69,19 @@ class ContactControllerComponentTest: KoinTest {
 
     @Test
     fun `when contact controller request to create a contact return created`() {
-        val path = "create_contact"
-        PostgresMock.executeScripts("$path/001.sql")
-
-        val jsonLoginResponse = loginRequestSpecification.post(LOGIN_ROUTE).body.asString()
-        val userLoginResponse = ObjectMapperConfig.jsonObjectMapper.
-        readValue(jsonLoginResponse, UserLoginResponse::class.java)
-        val accessToken = userLoginResponse.accessToken
 
         contactRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
             .`when`().post(VALID_CONTACTS_ROUTE)
             .then().statusCode(HttpStatus.SC_CREATED)
+            .and().contentType(TEXT)
+    }
+
+    @Test
+    fun `when contact controller request to create a contact without phone should return error`() {
+
+        invalidContactRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().post(VALID_CONTACTS_ROUTE)
+            .then().statusCode(HttpStatus.SC_BAD_REQUEST)
             .and().contentType(TEXT)
     }
 

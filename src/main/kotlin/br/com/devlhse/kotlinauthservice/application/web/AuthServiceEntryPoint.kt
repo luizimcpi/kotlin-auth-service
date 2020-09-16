@@ -17,21 +17,20 @@ import br.com.devlhse.kotlinauthservice.config.modules.repositoryModule
 import br.com.devlhse.kotlinauthservice.config.modules.securityModule
 import br.com.devlhse.kotlinauthservice.config.modules.serviceModule
 import br.com.devlhse.kotlinauthservice.domain.model.dto.MessageTrack
-import br.com.devlhse.kotlinauthservice.resources.messaging.MessageConsumerListener
 import br.com.devlhse.kotlinauthservice.resources.messaging.manager.QueueConsumerManager
 import io.javalin.Javalin
 import io.javalin.plugin.json.JavalinJackson
 import org.apache.logging.log4j.LogManager
 import org.koin.core.KoinComponent
-
 import org.koin.core.context.startKoin
 import org.koin.core.inject
+import org.koin.core.qualifier.named
 
 
 object AuthServiceEntryPoint : KoinComponent {
     private val environmentConfig: EnvironmentConfig by inject()
     private val authConfig: AuthConfig by inject()
-    private val listQueueConsumerManager: List<QueueConsumerManager<MessageTrack>> by inject(LIST_OF_CONSUMER_MANAGER)
+    private val listQueueConsumerManager: List<QueueConsumerManager<MessageTrack>> by inject(named(LIST_OF_CONSUMER_MANAGER))
     private lateinit var app: Javalin
 
     private val logger = LogManager.getLogger(AuthServiceEntryPoint::class.java.name)

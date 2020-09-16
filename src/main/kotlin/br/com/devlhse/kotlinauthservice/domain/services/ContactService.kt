@@ -36,12 +36,16 @@ class ContactService(private val userRepository: UserRepository,
         }
         throw NotFoundException("Error when find contact with id: $id")
     }
-//
-//    fun update(id: Int, user: User) {
-//        userRepository.update(id, user)
-//    }
-//
-//    fun delete(id: Int) {
-//        userRepository.delete(id)
-//    }
+
+    fun update(userRecoveredEmail: String, id: Int, contact: Contact) {
+        userRepository.findByEmail(userRecoveredEmail)?.let { user ->
+            contactRepository.update(id, user.id!!, contact)
+        }
+    }
+
+    fun delete(userRecoveredEmail: String, id: Int) {
+        userRepository.findByEmail(userRecoveredEmail)?.let { user ->
+            contactRepository.delete(id, user.id!!)
+        }
+    }
 }

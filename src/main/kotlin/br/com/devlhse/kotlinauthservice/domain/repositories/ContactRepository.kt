@@ -11,4 +11,6 @@ interface ContactRepository {
    fun findByUser(userId: Int, pageable: Pageable): ContactPageable
    fun save(contact: Contact)
    fun findById(userId: Int, id: Int): ContactResponse?
+   fun update(id: Int, userId: Int, contact: Contact)
+   fun delete(id: Int, userId: Int)
 }

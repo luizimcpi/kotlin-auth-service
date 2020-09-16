@@ -12,9 +12,11 @@ import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import java.time.LocalDateTime
 import kotlin.math.ceil
 
@@ -88,5 +90,26 @@ class ContactRepositoryImpl: ContactRepository {
                 ContactTable.toContactResponse(it)
             }
         }
+    }
+
+    override fun update(id: Int, userId: Int, contact: Contact) {
+        transaction {
+            ContactTable.update({
+                (ContactTable.id eq id) and (ContactTable.userId eq userId)
+            }) {
+                it[name] = contact.name
+                it[email] = contact.email
+                it[phone] = contact.phone
+                it[updatedAt] = LocalDateTime.now()
+            }
+        }
+        logger.info("Contact with id: $id has been updated")
+    }
+
+    override fun delete(id: Int, userId: Int) {
+        transaction {
+            ContactTable.deleteWhere { (ContactTable.id eq id) and (ContactTable.userId eq userId) }
+        }
+        logger.info("Contact with id: $id has been deleted")
     }
 }

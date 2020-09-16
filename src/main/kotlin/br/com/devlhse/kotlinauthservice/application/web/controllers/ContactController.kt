@@ -71,20 +71,36 @@ object ContactController : KoinComponent {
             throw NotFoundException("Contact Not Found")
         }
     }
-//
-//    fun updateUser(ctx: Context) {
-//        ctx.bodyValidator<UserRequest>()
-//            .check({ it.user?.email?.isEmailValid() ?: true })
-//            .check({ !it.user?.password.isNullOrBlank() })
-//            .get().user?.also { user ->
-//            userService.update(ctx.pathParam("user-id").toInt(), user)
-//            ctx.status(HttpStatus.CREATED_201)
-//        }
-//        ctx.status(HttpStatus.NO_CONTENT_204)
-//    }
-//
-//    fun deleteUser(ctx: Context) {
-//        userService.delete(ctx.pathParam("user-id").toInt())
-//        ctx.status(HttpStatus.NO_CONTENT_204)
-//    }
+
+    fun updateContact(ctx: Context) {
+        val decodedJwt = authConfig.getJwtTokenHeader(ctx)
+        try {
+            ctx.bodyValidator<ContactRequest>()
+                .check({ it.contact?.email?.isEmailValid() ?: true })
+                .check({ !it.contact?.phone.isNullOrBlank() })
+                .check({ !it.contact?.name.isNullOrBlank() })
+                .get().contact?.also { contact ->
+                    authConfig.getEmail(decodedJwt)?.let { recoveredEmail ->
+                        contactService.update(recoveredEmail, ctx.pathParam("contact-id").toInt(), contact)
+                        ctx.status(HttpStatus.NO_CONTENT_204)
+                    }
+                }
+        } catch(e: Exception) {
+            logger.error("Erro ao atualizar contato do usuario $e")
+            throw NotFoundException("Contact update error")
+        }
+    }
+
+    fun deleteContact(ctx: Context) {
+        val decodedJwt = authConfig.getJwtTokenHeader(ctx)
+        try{
+            authConfig.getEmail(decodedJwt)?.let { recoveredEmail ->
+                contactService.delete(recoveredEmail, ctx.pathParam("contact-id").toInt())
+                ctx.status(HttpStatus.NO_CONTENT_204)
+            }
+        }catch(e: Exception) {
+            logger.error("Erro ao exlcuir contato do usuario $e")
+            throw NotFoundException("Contact delete error")
+        }
+    }
 }

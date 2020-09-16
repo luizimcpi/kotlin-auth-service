@@ -12,8 +12,8 @@ object ContactRoutes {
             ApiBuilder.post(ContactController::createContact, roles(Roles.AUTHENTICATED))
             ApiBuilder.path(":contact-id") {
                 ApiBuilder.get(ContactController::getContactById, roles(Roles.AUTHENTICATED))
-//                ApiBuilder.patch(ContactController::updateContact, roles(Roles.AUTHENTICATED))
-//                ApiBuilder.delete(ContactController::deleteContact, roles(Roles.AUTHENTICATED))
+                ApiBuilder.put(ContactController::updateContact, roles(Roles.AUTHENTICATED))
+                ApiBuilder.delete(ContactController::deleteContact, roles(Roles.AUTHENTICATED))
             }
         }
     }

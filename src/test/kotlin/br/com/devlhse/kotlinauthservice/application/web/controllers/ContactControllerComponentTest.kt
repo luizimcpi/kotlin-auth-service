@@ -25,6 +25,7 @@ class ContactControllerComponentTest: KoinTest {
     private val validRequestContentType = "application/json"
     private val validLoginBody = "/requests/valid_body_user_request.json".getResourceContent()
     private val validContactBody = "/requests/valid_body_contact_request.json".getResourceContent()
+    private val validUpdateContactBody = "/requests/valid_body_update_contact_request.json".getResourceContent()
     private val invalidContactBody = "/requests/invalid_body_contact_request.json".getResourceContent()
     private lateinit var accessToken: String
 
@@ -34,7 +35,7 @@ class ContactControllerComponentTest: KoinTest {
         .contentType(validRequestContentType)
 
 
-    private val paginatedRequestSpecification: RequestSpecification = RestAssured.given()
+    private val deafultRequestSpecification: RequestSpecification = RestAssured.given()
         .baseUri(baseUrl)
 
 
@@ -62,7 +63,7 @@ class ContactControllerComponentTest: KoinTest {
         val path = "find_paginated_contacts"
         PostgresMock.executeScripts("$path/002.sql")
 
-        paginatedRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
             .`when`().get(VALID_CONTACTS_QUERY_ROUTE)
             .then().statusCode(HttpStatus.SC_OK)
             .and().contentType(JSON)
@@ -91,7 +92,7 @@ class ContactControllerComponentTest: KoinTest {
         val path = "find_paginated_contacts"
         PostgresMock.executeScripts("$path/002.sql")
 
-        paginatedRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
             .`when`().get("$VALID_CONTACTS_ROUTE/1")
             .then().statusCode(HttpStatus.SC_OK)
             .and().contentType(JSON)
@@ -106,8 +107,46 @@ class ContactControllerComponentTest: KoinTest {
         val path = "find_paginated_contacts"
         PostgresMock.executeScripts("$path/002.sql")
 
-        paginatedRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
             .`when`().get("$VALID_CONTACTS_ROUTE/11")
+            .then().statusCode(HttpStatus.SC_NOT_FOUND)
+            .and().contentType(JSON)
+
+    }
+
+    @Test
+    fun `when contact controller request to update contact by id of an user should return success`() {
+        val path = "find_paginated_contacts"
+        PostgresMock.executeScripts("$path/002.sql")
+
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken").body(validUpdateContactBody)
+            .`when`().put("$VALID_CONTACTS_ROUTE/1")
+            .then().statusCode(HttpStatus.SC_NO_CONTENT)
+            .and().contentType(TEXT)
+
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().get("$VALID_CONTACTS_ROUTE/1")
+            .then().statusCode(HttpStatus.SC_OK)
+            .and().contentType(JSON)
+            .body("id", Matchers.equalTo(1))
+            .body("name", Matchers.equalTo("teste contact updated"))
+            .body("email", Matchers.equalTo("teste@teste.com.br"))
+            .body("phone", Matchers.equalTo("551399177777"))
+
+    }
+
+    @Test
+    fun `when contact controller request to delete contact by id of an user should return success`() {
+        val path = "find_paginated_contacts"
+        PostgresMock.executeScripts("$path/002.sql")
+
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().delete("$VALID_CONTACTS_ROUTE/1")
+            .then().statusCode(HttpStatus.SC_NO_CONTENT)
+            .and().contentType(TEXT)
+
+        deafultRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().get("$VALID_CONTACTS_ROUTE/1")
             .then().statusCode(HttpStatus.SC_NOT_FOUND)
             .and().contentType(JSON)
 

@@ -41,13 +41,22 @@ object ContactController : KoinComponent {
 
 
     fun createContact(ctx: Context) {
+        val decodedJwt = authConfig.getJwtTokenHeader(ctx)
+
+        try {
         ctx.bodyValidator<ContactRequest>()
             .check({ it.contact?.email?.isEmailValid() ?: true })
             .check({ !it.contact?.phone.isNullOrBlank() })
             .check({ !it.contact?.name.isNullOrBlank() })
             .get().contact?.also { contact ->
-                contactService.save(contact)
-            ctx.status(HttpStatus.CREATED_201)
+                authConfig.getEmail(decodedJwt)?.let{ recoveredEmail ->
+                    contactService.save(recoveredEmail, contact)
+                    ctx.status(HttpStatus.CREATED_201)
+                }
+            }
+        }catch(e: Exception) {
+            logger.error("Erro ao incluir contato do usuario $e")
+            throw NotFoundException("Contact insertion error")
         }
     }
 //

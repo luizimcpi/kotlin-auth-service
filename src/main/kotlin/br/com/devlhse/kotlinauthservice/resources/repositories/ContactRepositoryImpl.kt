@@ -71,6 +71,7 @@ class ContactRepositoryImpl: ContactRepository {
                 it[phone] = contact.phone
                 it[createdAt] = LocalDateTime.now()
                 it[updatedAt] = LocalDateTime.now()
+                it[userId] = contact.userId!!
             }
 
             logger.info("Contact has been inserted with id: $contactId")

@@ -1,6 +1,7 @@
 package br.com.devlhse.kotlinauthservice.domain.services
 
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
+import br.com.devlhse.kotlinauthservice.domain.model.entity.Contact
 import br.com.devlhse.kotlinauthservice.domain.model.entity.User
 import br.com.devlhse.kotlinauthservice.domain.repositories.ContactRepository
 import br.com.devlhse.kotlinauthservice.domain.repositories.UserRepository
@@ -49,6 +50,29 @@ class ContactServiceTest {
 
         verify {
             repository.findByUser(1, validPageable)
+        }
+    }
+
+    @Test
+    fun `when create contact should call repository to save new user contact`() {
+
+        val contactService =
+            ContactService(
+                userRepository,
+                repository
+            )
+
+
+        val userRecoveredEmail = "teste@teste.com"
+        val validUser = User("teste", userRecoveredEmail, "teste1234", "123456")
+        val validContact = Contact("teste", "teste@teste.com.br", "5513999999999")
+
+        every{ userRepository.findByEmail(userRecoveredEmail) } returns validUser
+
+        contactService.save(userRecoveredEmail, validContact)
+
+        verify {
+            repository.save(validContact)
         }
     }
 

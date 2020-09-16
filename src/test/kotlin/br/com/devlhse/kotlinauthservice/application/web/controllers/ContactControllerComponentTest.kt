@@ -81,8 +81,8 @@ class ContactControllerComponentTest: KoinTest {
 
         invalidContactRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
             .`when`().post(VALID_CONTACTS_ROUTE)
-            .then().statusCode(HttpStatus.SC_BAD_REQUEST)
-            .and().contentType(TEXT)
+            .then().statusCode(HttpStatus.SC_NOT_FOUND)
+            .and().contentType(JSON)
     }
 
 

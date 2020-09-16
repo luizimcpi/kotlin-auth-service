@@ -4,5 +4,6 @@ data class Contact (
     val name: String,
     val email: String,
     val phone: String,
-    val id: Int? = null
+    val id: Int? = null,
+    val userId: Int? = null
 )

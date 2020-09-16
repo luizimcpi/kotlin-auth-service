@@ -22,8 +22,10 @@ class ContactService(private val userRepository: UserRepository, private val con
         throw NotFoundException("Contacts not found")
     }
 
-    fun save(contact: Contact) {
-        contactRepository.save(contact)
+    fun save(userRecoveredEmail: String, contact: Contact) {
+        userRepository.findByEmail(userRecoveredEmail)?.let { user ->
+            contactRepository.save(contact.copy(userId = user.id))
+        }
     }
 //
 //    fun authenticate(user: User): UserLoginResponse {

@@ -1,11 +1,14 @@
 package br.com.devlhse.kotlinauthservice.application.web.controllers
 
 import br.com.devlhse.kotlinauthservice.config.AuthConfig
+import br.com.devlhse.kotlinauthservice.domain.extensions.isEmailValid
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
+import br.com.devlhse.kotlinauthservice.domain.model.request.ContactRequest
 import br.com.devlhse.kotlinauthservice.domain.services.ContactService
 import br.com.devlhse.kotlinauthservice.exception.NotFoundException
 import io.javalin.http.Context
 import org.apache.logging.log4j.LogManager
+import org.eclipse.jetty.http.HttpStatus
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -37,15 +40,16 @@ object ContactController : KoinComponent {
     }
 
 
-//    fun createUser(ctx: Context) {
-//        ctx.bodyValidator<UserRequest>()
-//            .check({ it.user?.email?.isEmailValid() ?: true })
-//            .check({ !it.user?.password.isNullOrBlank() })
-//            .get().user?.also { user ->
-//            userService.save(user)
-//            ctx.status(HttpStatus.CREATED_201)
-//        }
-//    }
+    fun createContact(ctx: Context) {
+        ctx.bodyValidator<ContactRequest>()
+            .check({ it.contact?.email?.isEmailValid() ?: true })
+            .check({ !it.contact?.phone.isNullOrBlank() })
+            .check({ !it.contact?.name.isNullOrBlank() })
+            .get().contact?.also { contact ->
+                contactService.save(contact)
+            ctx.status(HttpStatus.CREATED_201)
+        }
+    }
 //
 //    fun getUser(ctx: Context) {
 //        try {

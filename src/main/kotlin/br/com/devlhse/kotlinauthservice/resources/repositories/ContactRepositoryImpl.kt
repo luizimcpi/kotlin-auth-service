@@ -1,20 +1,20 @@
 package br.com.devlhse.kotlinauthservice.resources.repositories
 
+import br.com.devlhse.kotlinauthservice.domain.extensions.toContactResponse
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
 import br.com.devlhse.kotlinauthservice.domain.model.entity.Contact
 import br.com.devlhse.kotlinauthservice.domain.model.response.ContactPageable
+import br.com.devlhse.kotlinauthservice.domain.model.response.ContactResponse
 import br.com.devlhse.kotlinauthservice.domain.repositories.ContactRepository
 import br.com.devlhse.kotlinauthservice.resources.tables.ContactTable
-import br.com.devlhse.kotlinauthservice.resources.tables.ContactTable.email
-import br.com.devlhse.kotlinauthservice.resources.tables.ContactTable.name
-import br.com.devlhse.kotlinauthservice.resources.tables.ContactTable.phone
 import org.apache.logging.log4j.LogManager
 import org.jetbrains.exposed.sql.Query
-import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDateTime
 import kotlin.math.ceil
 
 @SuppressWarnings("TooGenericExceptionCaught")
@@ -37,7 +37,7 @@ class ContactRepositoryImpl: ContactRepository {
 
     }
 
-    private fun findBy(query: Query, pageable: Pageable): List<Contact> = try {
+    private fun findBy(query: Query, pageable: Pageable): List<ContactResponse> = try {
         transaction {
             addLogger(StdOutSqlLogger)
             findByPage(
@@ -45,7 +45,7 @@ class ContactRepositoryImpl: ContactRepository {
                 pageable.pageSize,
                 pageable.pageNumber
             )
-        }.map { it.toEntity() }
+        }.map { ContactTable.toContactResponse(it) }
     } catch (ex: Exception) {
         logger.error("error in page: ${pageable.pageNumber} message: ${ex.message}")
         emptyList()
@@ -61,11 +61,19 @@ class ContactRepositoryImpl: ContactRepository {
         logger.error("error in counter: ${ex.message}")
         throw ex
     }
+
+    override fun save(contact: Contact) {
+        transaction {
+            addLogger(StdOutSqlLogger)
+            val contactId = ContactTable.insertAndGetId {
+                it[name] = contact.name
+                it[email] = contact.email
+                it[phone] = contact.phone
+                it[createdAt] = LocalDateTime.now()
+                it[updatedAt] = LocalDateTime.now()
+            }
+
+            logger.info("Contact has been inserted with id: $contactId")
+        }
+    }
 }
-
-
-private fun ResultRow.toEntity() = Contact(
-    name = this[name],
-    email = this[email],
-    phone = this[phone]
-)

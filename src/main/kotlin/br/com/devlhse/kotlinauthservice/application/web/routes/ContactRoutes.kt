@@ -9,7 +9,7 @@ object ContactRoutes {
     fun init() {
         ApiBuilder.path("contacts") {
             ApiBuilder.get(ContactController::findPaginatedContactsbyUser, roles(Roles.AUTHENTICATED))
-//            ApiBuilder.post(ContactController::createContact, roles(Roles.AUTHENTICATED))
+            ApiBuilder.post(ContactController::createContact, roles(Roles.AUTHENTICATED))
 //            ApiBuilder.path(":contact-id") {
 //                ApiBuilder.get(ContactController::getContactById, roles(Roles.AUTHENTICATED))
 //                ApiBuilder.patch(ContactController::updateContact, roles(Roles.AUTHENTICATED))

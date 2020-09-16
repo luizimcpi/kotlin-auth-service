@@ -1,6 +1,7 @@
 package br.com.devlhse.kotlinauthservice.domain.services
 
 import br.com.devlhse.kotlinauthservice.domain.model.dto.Pageable
+import br.com.devlhse.kotlinauthservice.domain.model.entity.Contact
 import br.com.devlhse.kotlinauthservice.domain.model.response.ContactPageable
 import br.com.devlhse.kotlinauthservice.domain.repositories.ContactRepository
 import br.com.devlhse.kotlinauthservice.domain.repositories.UserRepository
@@ -21,14 +22,9 @@ class ContactService(private val userRepository: UserRepository, private val con
         throw NotFoundException("Contacts not found")
     }
 
-//    fun save(user: User) {
-//
-//        userRepository.findByEmail(user.email)?.let {
-//            logger.error("Erro ao cadastrar usuário com email: ${user.email} já existente")
-//            throw ConflictException("Email already in use!")
-//        }
-//        userRepository.save(user.copy(password = String(base64Encoder.encode(cipher.encrypt(user.password)))))
-//    }
+    fun save(contact: Contact) {
+        contactRepository.save(contact)
+    }
 //
 //    fun authenticate(user: User): UserLoginResponse {
 //        val userFound = userRepository.findByEmail(user.email)

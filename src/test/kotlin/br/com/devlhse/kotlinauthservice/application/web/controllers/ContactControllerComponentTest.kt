@@ -8,6 +8,7 @@ import br.com.devlhse.kotlinauthservice.utils.getResourceContent
 import io.javalin.core.util.Header.AUTHORIZATION
 import io.restassured.RestAssured
 import io.restassured.http.ContentType.JSON
+import io.restassured.http.ContentType.TEXT
 import io.restassured.specification.RequestSpecification
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Test
@@ -21,6 +22,7 @@ class ContactControllerComponentTest: KoinTest {
     private val baseUrl = "http://localhost:7000"
     private val validRequestContentType = "application/json"
     private val validLoginBody = "/requests/valid_body_user_request.json".getResourceContent()
+    private val validContactBody = "/requests/valid_body_contact_request.json".getResourceContent()
 
     private val loginRequestSpecification: RequestSpecification = RestAssured.given()
         .baseUri(baseUrl)
@@ -31,6 +33,10 @@ class ContactControllerComponentTest: KoinTest {
     private val paginatedRequestSpecification: RequestSpecification = RestAssured.given()
         .baseUri(baseUrl)
 
+
+    private val contactRequestSpecification: RequestSpecification = RestAssured.given()
+        .baseUri(baseUrl)
+        .body(validContactBody)
 
 
     @Test
@@ -49,9 +55,26 @@ class ContactControllerComponentTest: KoinTest {
             .and().contentType(JSON)
     }
 
+    @Test
+    fun `when contact controller request to create a contact return created`() {
+        val path = "create_contact"
+        PostgresMock.executeScripts("$path/001.sql")
+
+        val jsonLoginResponse = loginRequestSpecification.post(LOGIN_ROUTE).body.asString()
+        val userLoginResponse = ObjectMapperConfig.jsonObjectMapper.
+        readValue(jsonLoginResponse, UserLoginResponse::class.java)
+        val accessToken = userLoginResponse.accessToken
+
+        contactRequestSpecification.header(AUTHORIZATION, "Bearer $accessToken")
+            .`when`().post(VALID_CONTACTS_ROUTE)
+            .then().statusCode(HttpStatus.SC_CREATED)
+            .and().contentType(TEXT)
+    }
+
 
     companion object {
         private const val LOGIN_ROUTE = "/users/login"
         private const val VALID_CONTACTS_QUERY_ROUTE = "/contacts?pageNumber=1&pageSize=5"
+        private const val VALID_CONTACTS_ROUTE = "/contacts"
     }
 }

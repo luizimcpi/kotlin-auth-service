@@ -36,22 +36,6 @@ class UserServiceTest {
         unmockkAll()
     }
 
-    @Test
-    fun `when execute find all should call repository to find all users`() {
-
-        val userService =
-            UserService(
-                cipher,
-                jwtProvider,
-                repository
-            )
-
-        userService.findAll()
-
-        verify {
-            repository.findAll()
-        }
-    }
 
     @Test
     fun `when receive valid name and email should call repository and save with success`() {
@@ -131,40 +115,4 @@ class UserServiceTest {
         assertThrows<ConflictException> { userService.save(user) }
     }
 
-    @Test
-    fun `when receive valid id should call repository to find by id`() {
-
-        val validUserId = 1
-        val userService =
-            UserService(
-                cipher,
-                jwtProvider,
-                repository
-            )
-
-        userService.findById(validUserId)
-
-        verify {
-            repository.findById(1)
-        }
-    }
-
-
-    @Test
-    fun `when receive valid id to delete should call repository to find and delete`() {
-
-        val validUserId = 1
-        val userService =
-            UserService(
-                cipher,
-                jwtProvider,
-                repository
-            )
-
-        userService.delete(validUserId)
-
-        verify {
-            repository.delete(validUserId)
-        }
-    }
 }

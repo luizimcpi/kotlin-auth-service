@@ -2,15 +2,16 @@ package br.com.devlhse.kotlinauthservice.utils
 
 import br.com.devlhse.kotlinauthservice.config.DatabaseConfig
 import br.com.devlhse.kotlinauthservice.config.EnvironmentConfig
+import br.com.devlhse.kotlinauthservice.resources.tables.ContactTable
 import br.com.devlhse.kotlinauthservice.resources.tables.UserTable
 import com.opentable.db.postgres.embedded.EmbeddedPostgres
 import io.mockk.every
 import io.mockk.mockk
-import java.io.File
-import java.net.URI
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.io.File
+import java.net.URI
 
 object PostgresMock {
 
@@ -52,6 +53,7 @@ object PostgresMock {
 
     fun resetDb() {
         transaction {
+            ContactTable.deleteAll()
             UserTable.deleteAll()
         }
     }

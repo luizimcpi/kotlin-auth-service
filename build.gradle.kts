@@ -50,6 +50,8 @@ dependencies {
     implementation("com.jcabi:jcabi-manifests:1.1")
     implementation("com.github.kittinunf.fuel:fuel:2.2.3")
     implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.3")
+    implementation("com.amazonaws:amazon-sqs-java-messaging-lib:1.0.8")
+
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.koin:koin-test:2.1.5")
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.1")
@@ -57,6 +59,7 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:4.3.0")
     testImplementation("com.opentable.components:otj-pg-embedded:0.13.1")
     testImplementation("org.flywaydb:flyway-core:6.4.1")
+    testImplementation("org.elasticmq:elasticmq-rest-sqs_2.12:0.14.6")
 }
 
 tasks.jacocoTestReport {
@@ -67,26 +70,30 @@ tasks.jacocoTestReport {
     }
 }
 
+val coverageExcludePaths = listOf(
+    "br/com/devlhse/kotlinauthservice/application/**",
+    "br/com/devlhse/kotlinauthservice/config/**",
+    "br/com/devlhse/kotlinauthservice/domain/model/**",
+    "br/com/devlhse/kotlinauthservice/domain/common/**",
+    "br/com/devlhse/kotlinauthservice/domain/repositories/**",
+    "br/com/devlhse/kotlinauthservice/exception/**",
+    "br/com/devlhse/kotlinauthservice/resources/tables/**",
+    "br/com/devlhse/kotlinauthservice/resources/clients/**"
+)
+
 tasks.jacocoTestCoverageVerification {
     dependsOn(":test")
     violationRules {
         rule {
             limit {
-                minimum = "0.77".toBigDecimal()
+                minimum = "0.76".toBigDecimal()
             }
         }
     }
 
     classDirectories.setFrom(
         sourceSets.main.get().output.asFileTree.matching {
-            exclude("br/com/devlhse/kotlinauthservice/application/**")
-            exclude("br/com/devlhse/kotlinauthservice/config/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/model/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/common/**")
-            exclude("br/com/devlhse/kotlinauthservice/domain/repositories/**")
-            exclude("br/com/devlhse/kotlinauthservice/exception/**")
-            exclude("br/com/devlhse/kotlinauthservice/resources/tables/**")
-            exclude("br/com/devlhse/kotlinauthservice/resources/clients/**")
+            exclude(coverageExcludePaths)
         }
     )
 }

@@ -4,6 +4,8 @@ import java.io.File
 
 object TestUtils {
 
+    fun port(url: String) = url.split(":")[2].toInt()
+
     fun viaCepResponseSample(sampleName: String) = readSample("viacep/responses/$sampleName")
 
     private fun readSample(path: String): String {

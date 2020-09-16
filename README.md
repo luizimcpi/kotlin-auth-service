@@ -16,6 +16,15 @@ DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
 AUTH_SECRET=my_super_secret
 VIACEP_URL=https://viacep.com.br/ws/
+CONTACT_SQS_ADDRESS=http://localhost:9323
+CONTACT_SQS_QUEUE_NAME=sqs-contact
+CONTACT_SQS_REGION=us-east-1
+```
+## Create local sqs using alpine sqs
+```
+docker run --name alpine-sqs -p 9324:9324 -p 9325:9325 -d roribio16/alpine-sqs
+
+aws --endpoint-url http://localhost:9324 sqs create-queue --queue-name sqs-contact 
 ```
 
 ## Create local postgres database - using docker

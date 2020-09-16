@@ -6,6 +6,9 @@ object ApplicationMain {
 
     @JvmStatic
     fun main(args: Array<String>){
-        AuthServiceEntryPoint.init()
+        AuthServiceEntryPoint.run{
+            init()
+            initConsumers()
+        }
     }
 }

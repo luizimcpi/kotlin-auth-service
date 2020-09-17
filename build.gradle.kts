@@ -33,6 +33,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.javalin:javalin:3.9.0")
+    implementation("io.javalin:javalin-openapi:3.10.1")
     implementation("org.slf4j:slf4j-simple:1.7.28")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.10.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1")
@@ -51,6 +52,8 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.2.3")
     implementation("com.github.kittinunf.fuel:fuel-jackson:2.2.3")
     implementation("com.amazonaws:amazon-sqs-java-messaging-lib:1.0.8")
+    implementation("de.huxhorn.sulky:de.huxhorn.sulky.ulid:8.2.0")
+    implementation("org.awaitility:awaitility-kotlin:3.1.6")
 
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.koin:koin-test:2.1.5")
@@ -78,7 +81,8 @@ val coverageExcludePaths = listOf(
     "br/com/devlhse/kotlinauthservice/domain/repositories/**",
     "br/com/devlhse/kotlinauthservice/exception/**",
     "br/com/devlhse/kotlinauthservice/resources/tables/**",
-    "br/com/devlhse/kotlinauthservice/resources/clients/**"
+    "br/com/devlhse/kotlinauthservice/resources/clients/**",
+    "br/com/devlhse/kotlinauthservice/resources/messaging/**"
 )
 
 tasks.jacocoTestCoverageVerification {

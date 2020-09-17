@@ -16,6 +16,19 @@ DATABASE_USER=postgres
 DATABASE_PASSWORD=postgres
 AUTH_SECRET=my_super_secret
 VIACEP_URL=https://viacep.com.br/ws/
+CONTACT_SQS_ADDRESS=http://localhost:9323
+CONTACT_SQS_QUEUE_NAME=sqs-contact
+CONTACT_SQS_REGION=us-east-1
+```
+## Create local sqs using alpine sqs
+```
+docker run --name alpine-sqs -p 9324:9324 -p 9325:9325 -d roribio16/alpine-sqs
+
+aws --endpoint-url http://localhost:9324 sqs create-queue --queue-name sqs-contact 
+
+send message
+
+aws --endpoint-url http://localhost:9324 sqs send-message --queue-url http://localhost:9324/queue/sqs-contact --message-body "{\"contact\":{\"name\":\"Contato Teste 1\",\"email\":\"contact1@gmail.com\",\"phone\":\"5513999999999\"}}"
 ```
 
 ## Create local postgres database - using docker
@@ -93,9 +106,18 @@ File requests.rest can be open with plugin REST client in VSCode
 
 [Junit 5](https://junit.org/junit5/)
 
+[Fuel](https://github.com/kittinunf/fuel/tree/master/fuel)
+
+[Sulky ULID](https://github.com/huxi/sulky/tree/master/sulky-ulid)
+
+[Wiremock](https://github.com/tomakehurst/wiremock)
+
+[Rest Assured](https://rest-assured.io/)
+
+[PostgreSQL Embedded](https://github.com/opentable/otj-pg-embedded)
+
 ## TO DO
-- [ ] prevent an user can consult another users information
 - [ ] create and configure arch tests ArchUnit
 - [ ] pass login crendentials using application/x-www-form-urlencoded
 - [ ] create refresh token
-- [ ] create paginated contacts CRUD per user
+- [ ] document endpoints with openAPI plugin

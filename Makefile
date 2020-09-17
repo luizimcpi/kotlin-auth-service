@@ -19,3 +19,4 @@ fclean:
 config-dev:
     export DATABASE_URL=jdbc:postgresql://localhost:5432/postgres
     export VIACEP_URL=https://viacep.com.br/ws/
+    export CONTACT_SQS_ADDRESS=http://localhost:9324

@@ -5,32 +5,55 @@ import br.com.devlhse.kotlinauthservice.application.web.routes.ContactRoutes
 import br.com.devlhse.kotlinauthservice.application.web.routes.HealthRoutes
 import br.com.devlhse.kotlinauthservice.application.web.routes.UserRoutes
 import br.com.devlhse.kotlinauthservice.config.AuthConfig
+import br.com.devlhse.kotlinauthservice.config.Constants.LIST_OF_CONSUMER_MANAGER
 import br.com.devlhse.kotlinauthservice.config.DatabaseConfig
 import br.com.devlhse.kotlinauthservice.config.EnvironmentConfig
 import br.com.devlhse.kotlinauthservice.config.ErrorExceptionMapping
 import br.com.devlhse.kotlinauthservice.config.ObjectMapperConfig
 import br.com.devlhse.kotlinauthservice.config.modules.clientHttpModule
 import br.com.devlhse.kotlinauthservice.config.modules.configModule
+import br.com.devlhse.kotlinauthservice.config.modules.messagingModule
 import br.com.devlhse.kotlinauthservice.config.modules.repositoryModule
 import br.com.devlhse.kotlinauthservice.config.modules.securityModule
 import br.com.devlhse.kotlinauthservice.config.modules.serviceModule
+import br.com.devlhse.kotlinauthservice.domain.model.dto.MessageTrack
+import br.com.devlhse.kotlinauthservice.resources.messaging.manager.QueueConsumerManager
 import io.javalin.Javalin
 import io.javalin.plugin.json.JavalinJackson
+import io.javalin.plugin.openapi.OpenApiOptions
+import io.javalin.plugin.openapi.OpenApiPlugin
+import io.swagger.v3.oas.models.info.Info
+import org.apache.logging.log4j.LogManager
 import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.core.inject
+import org.koin.core.qualifier.named
 
+@SuppressWarnings("TooGenericExceptionCaught")
 object AuthServiceEntryPoint : KoinComponent {
     private val environmentConfig: EnvironmentConfig by inject()
     private val authConfig: AuthConfig by inject()
+    private val listQueueConsumerManager: List<QueueConsumerManager<MessageTrack>>
+            by inject(named(LIST_OF_CONSUMER_MANAGER))
     private lateinit var app: Javalin
+
+    private val logger = LogManager.getLogger(AuthServiceEntryPoint::class.java.name)
 
     fun init() {
         startKoin {
             // use Koin logger
             printLogger()
             // declare modules
-            modules(listOf(securityModule, configModule, serviceModule, repositoryModule, clientHttpModule))
+            modules(
+                listOf(
+                    securityModule,
+                    configModule,
+                    serviceModule,
+                    repositoryModule,
+                    clientHttpModule,
+                    messagingModule
+                )
+            )
         }
 
         app = Javalin.create {
@@ -39,30 +62,13 @@ object AuthServiceEntryPoint : KoinComponent {
             }
         }.apply {
             JavalinJackson.configure(ObjectMapperConfig.jsonObjectMapper)
+            config.registerPlugin(OpenApiPlugin(getOpenApiOptions()))
         }.start(EnvironmentConfig().serverPort)
 
         authConfig.configure(app)
         ErrorExceptionMapping.register(app)
         DatabaseConfig(environmentConfig).connect()
 
-//        transaction {
-//            val generatedUserId = UserTable.insertAndGetId {
-//                it[name] = "User teste"
-//                it[email] = "teste@teste.com.br"
-//                it[password] = "teste1234"
-//                it[createdAt] = LocalDateTime.now()
-//                it[updatedAt] = LocalDateTime.now()
-//            }
-//
-//            val contactId = ContactTable.insertAndGetId {
-//                it[name] = "teste contact"
-//                it[email] = "teste@teste.com.br"
-//                it[phone] = "551399177777"
-//                it[userId] = generatedUserId.value
-//                it[UserTable.createdAt] = LocalDateTime.now()
-//                it[UserTable.updatedAt] = LocalDateTime.now()
-//            }
-//        }
 
         app.routes {
             UserRoutes.init()
@@ -72,7 +78,23 @@ object AuthServiceEntryPoint : KoinComponent {
         }
     }
 
+    fun initConsumers (){
+        try{
+            listQueueConsumerManager.forEach { it.startConsumer() }
+        }catch (e: Exception){
+            logger.error("unable to connect to sqs due to: ${e.message}")
+            throw e
+        }
+    }
+
     fun stop() {
         app.stop()
+    }
+
+    private fun getOpenApiOptions(): OpenApiOptions {
+        val applicationInfo: Info = Info()
+            .version("1.0")
+            .description("My Application")
+        return OpenApiOptions(applicationInfo).path("/swagger-docs")
     }
 }

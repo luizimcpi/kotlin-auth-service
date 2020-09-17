@@ -19,6 +19,9 @@ class EnvironmentConfig (configuration: Configuration = EnvironmentVariables()){
     val authSecret = configuration[AUTH_SECRET]
     val headerTokenName = configuration.getOrElse(HEADER_TOKEN_NAME, DEFAULT_HEADER_TOKEN_NAME)
     val viaCepUrl = configuration[VIACEP_URL]
+    val contactSqsAddress = configuration[CONTACT_SQS_ADDRESS]
+    val contactSqsQueueName = configuration[CONTACT_SQS_QUEUE_NAME]
+    val contactSqsRegion = configuration[CONTACT_SQS_REGION]
 
     companion object {
         private val SERVER_PORT by intType
@@ -29,6 +32,9 @@ class EnvironmentConfig (configuration: Configuration = EnvironmentVariables()){
         private val AUTH_SECRET by stringType
         private val HEADER_TOKEN_NAME by stringType
         private val VIACEP_URL by stringType
+        private val CONTACT_SQS_ADDRESS by stringType
+        private val CONTACT_SQS_QUEUE_NAME by stringType
+        private val CONTACT_SQS_REGION by stringType
         private const val DEFAULT_SERVER_PORT = 7000
         private const val DEFAULT_ENABLE_DEBUG_VALUE = false
         private const val DEFAULT_HEADER_TOKEN_NAME = "Authorization"

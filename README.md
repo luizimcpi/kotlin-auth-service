@@ -106,9 +106,17 @@ File requests.rest can be open with plugin REST client in VSCode
 
 [Junit 5](https://junit.org/junit5/)
 
+[Fuel](https://github.com/kittinunf/fuel/tree/master/fuel)
+
+[Sulky ULID](https://github.com/huxi/sulky/tree/master/sulky-ulid)
+
+[Wiremock](https://github.com/tomakehurst/wiremock)
+
+[Rest Assured](https://rest-assured.io/)
+
+[PostgreSQL Embedded](https://github.com/opentable/otj-pg-embedded)
+
 ## TO DO
-- [ ] prevent an user can consult another users information
 - [ ] create and configure arch tests ArchUnit
 - [ ] pass login crendentials using application/x-www-form-urlencoded
 - [ ] create refresh token
-- [ ] create paginated contacts CRUD per user

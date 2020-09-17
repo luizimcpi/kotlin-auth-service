@@ -33,6 +33,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.javalin:javalin:3.9.0")
+    implementation("io.javalin:javalin-openapi:3.10.1")
     implementation("org.slf4j:slf4j-simple:1.7.28")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.10.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1")

@@ -120,3 +120,4 @@ File requests.rest can be open with plugin REST client in VSCode
 - [ ] create and configure arch tests ArchUnit
 - [ ] pass login crendentials using application/x-www-form-urlencoded
 - [ ] create refresh token
+- [ ] document endpoints with openAPI plugin

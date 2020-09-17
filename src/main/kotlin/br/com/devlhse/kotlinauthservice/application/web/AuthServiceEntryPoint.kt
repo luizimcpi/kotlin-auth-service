@@ -20,6 +20,9 @@ import br.com.devlhse.kotlinauthservice.domain.model.dto.MessageTrack
 import br.com.devlhse.kotlinauthservice.resources.messaging.manager.QueueConsumerManager
 import io.javalin.Javalin
 import io.javalin.plugin.json.JavalinJackson
+import io.javalin.plugin.openapi.OpenApiOptions
+import io.javalin.plugin.openapi.OpenApiPlugin
+import io.swagger.v3.oas.models.info.Info
 import org.apache.logging.log4j.LogManager
 import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
@@ -59,6 +62,7 @@ object AuthServiceEntryPoint : KoinComponent {
             }
         }.apply {
             JavalinJackson.configure(ObjectMapperConfig.jsonObjectMapper)
+            config.registerPlugin(OpenApiPlugin(getOpenApiOptions()))
         }.start(EnvironmentConfig().serverPort)
 
         authConfig.configure(app)
@@ -85,5 +89,12 @@ object AuthServiceEntryPoint : KoinComponent {
 
     fun stop() {
         app.stop()
+    }
+
+    private fun getOpenApiOptions(): OpenApiOptions {
+        val applicationInfo: Info = Info()
+            .version("1.0")
+            .description("My Application")
+        return OpenApiOptions(applicationInfo).path("/swagger-docs")
     }
 }

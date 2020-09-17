@@ -20,6 +20,4 @@ class ContactListenerService (
 
         logger.info("processed contact: ${body.contact}")
     }
-
-
 }

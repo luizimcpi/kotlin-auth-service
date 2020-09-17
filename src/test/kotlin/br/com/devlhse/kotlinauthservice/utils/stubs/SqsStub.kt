@@ -2,7 +2,6 @@ package br.com.devlhse.kotlinauthservice.utils.stubs
 
 import br.com.devlhse.kotlinauthservice.config.EnvironmentConfig
 import br.com.devlhse.kotlinauthservice.utils.TestUtils
-import com.amazonaws.auth.AWSCredentials
 import com.amazonaws.auth.AWSCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.client.builder.AwsClientBuilder
@@ -16,6 +15,11 @@ import org.elasticmq.rest.sqs.SQSRestServerBuilder
 
 object SqsStub {
     private val port = TestUtils.port(EnvironmentConfig().contactSqsAddress)
+
+    private val fakeCredentialsProvider = object : AWSCredentialsProvider {
+        override fun getCredentials() = BasicAWSCredentials("x", "x")
+        override fun refresh() {}
+    }
 
     private val sqsServer = SQSRestServerBuilder
         .withPort(port)
@@ -53,8 +57,4 @@ object SqsStub {
 
     fun sendMessage(queueName: String, payload: String) = sqsClient.sendMessage(queueUrls[queueName], payload)
 
-    private val fakeCredentialsProvider = object : AWSCredentialsProvider {
-        override fun getCredentials() = BasicAWSCredentials("x", "x")
-        override fun refresh() {}
-    }
 }

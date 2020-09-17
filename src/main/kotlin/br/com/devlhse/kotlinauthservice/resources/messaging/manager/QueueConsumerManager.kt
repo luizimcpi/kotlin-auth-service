@@ -5,7 +5,7 @@ import br.com.devlhse.kotlinauthservice.resources.messaging.session.QueueSession
 import org.apache.logging.log4j.LogManager
 import javax.jms.MessageConsumer
 
-
+@SuppressWarnings("TooGenericExceptionCaught")
 class QueueConsumerManager<T: Any>(
     private val queueSession: QueueSession,
     private val queueName: String,

@@ -26,11 +26,12 @@ import org.koin.core.context.startKoin
 import org.koin.core.inject
 import org.koin.core.qualifier.named
 
-
+@SuppressWarnings("TooGenericExceptionCaught")
 object AuthServiceEntryPoint : KoinComponent {
     private val environmentConfig: EnvironmentConfig by inject()
     private val authConfig: AuthConfig by inject()
-    private val listQueueConsumerManager: List<QueueConsumerManager<MessageTrack>> by inject(named(LIST_OF_CONSUMER_MANAGER))
+    private val listQueueConsumerManager: List<QueueConsumerManager<MessageTrack>>
+            by inject(named(LIST_OF_CONSUMER_MANAGER))
     private lateinit var app: Javalin
 
     private val logger = LogManager.getLogger(AuthServiceEntryPoint::class.java.name)

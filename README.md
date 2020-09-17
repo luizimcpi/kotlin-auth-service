@@ -25,6 +25,10 @@ CONTACT_SQS_REGION=us-east-1
 docker run --name alpine-sqs -p 9324:9324 -p 9325:9325 -d roribio16/alpine-sqs
 
 aws --endpoint-url http://localhost:9324 sqs create-queue --queue-name sqs-contact 
+
+send message
+
+aws --endpoint-url http://localhost:9324 sqs send-message --queue-url http://localhost:9324/queue/sqs-contact --message-body "{\"contact\":{\"name\":\"Contato Teste 1\",\"email\":\"contact1@gmail.com\",\"phone\":\"5513999999999\"}}"
 ```
 
 ## Create local postgres database - using docker

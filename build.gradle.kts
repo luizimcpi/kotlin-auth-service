@@ -80,7 +80,8 @@ val coverageExcludePaths = listOf(
     "br/com/devlhse/kotlinauthservice/domain/repositories/**",
     "br/com/devlhse/kotlinauthservice/exception/**",
     "br/com/devlhse/kotlinauthservice/resources/tables/**",
-    "br/com/devlhse/kotlinauthservice/resources/clients/**"
+    "br/com/devlhse/kotlinauthservice/resources/clients/**",
+    "br/com/devlhse/kotlinauthservice/resources/messaging/**"
 )
 
 tasks.jacocoTestCoverageVerification {

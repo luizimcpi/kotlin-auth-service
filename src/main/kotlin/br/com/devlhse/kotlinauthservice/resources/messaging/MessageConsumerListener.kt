@@ -9,6 +9,7 @@ import javax.jms.Message
 import javax.jms.MessageListener
 import javax.jms.TextMessage
 
+@SuppressWarnings("TooGenericExceptionCaught")
 class MessageConsumerListener<T> (
     private val listenerService: ListenerService<T>,
     private val valueType: Class<T>

@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "d244c551-20b4-4a2a-ad2c-86342eebee9b",
+		"name": "kotlin-auth-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Address by CEP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7000/addresses/11035120",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"addresses",
+						"11035120"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Contacts",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdWl6aHNlQGdtYWlsLmNvbSIsInJvbGUiOiJBVVRIRU5USUNBVEVEIiwiZXhwIjoxNjAwMzE2MDk5LCJpYXQiOjE2MDAzMTI0OTl9.qEjXeKuqiJ2gXXBXQIALf1e40XZJdTGh51B19rXOHTw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:7000/contacts?pageNumber=1&pageSize=5",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"contacts"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create  Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdWl6aHNlQGdtYWlsLmNvbSIsInJvbGUiOiJBVVRIRU5USUNBVEVEIiwiZXhwIjoxNjAwMzE2MDk5LCJpYXQiOjE2MDAzMTI0OTl9.qEjXeKuqiJ2gXXBXQIALf1e40XZJdTGh51B19rXOHTw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"contact\" : {\n    \"name\": \"Contato Teste 2\",\n    \"email\": \"contact2@gmail.com\",\n    \"phone\": \"5513999999999\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/contacts",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update  Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdWl6aHNlQGdtYWlsLmNvbSIsInJvbGUiOiJBVVRIRU5USUNBVEVEIiwiZXhwIjoxNjAwMzE2MDk5LCJpYXQiOjE2MDAzMTI0OTl9.qEjXeKuqiJ2gXXBXQIALf1e40XZJdTGh51B19rXOHTw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"contact\" : {\n    \"name\": \"Contato Teste Alterado\",\n    \"email\": \"contact2@gmail.com\",\n    \"phone\": \"5513999999999\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/contacts/1",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"contacts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete  Contact",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsdWl6aHNlQGdtYWlsLmNvbSIsInJvbGUiOiJBVVRIRU5USUNBVEVEIiwiZXhwIjoxNjAwMzE2MDk5LCJpYXQiOjE2MDAzMTI0OTl9.qEjXeKuqiJ2gXXBXQIALf1e40XZJdTGh51B19rXOHTw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/contacts/2",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"contacts",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\" : {\n        \"name\": \"Luiz Evangelista\",\n        \"email\": \"luizhse@gmail.com\",\n        \"password\": \"teste1234\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\" : {\n        \"name\": \"Luiz Evangelista\",\n        \"email\": \"luizhse@gmail.com\",\n        \"password\": \"teste1234\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:7000/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "7000",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

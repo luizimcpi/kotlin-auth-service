@@ -57,11 +57,15 @@ ALTER USER postgres WITH PASSWORD 'postgres';
 ## Flyway Migrate
 ```
 ./gradlew flywayMigrate -Dflyway.url=jdbc:postgresql://localhost:5432/postgres -Dflyway.user=postgres -Dflyway.password=postgres
+or
+make fmigrate
 ```
 
 ## Flyway Clean
 ```
 ./gradlew flywayClean -Dflyway.url=jdbc:postgresql://localhost:5432/postgres -Dflyway.user=postgres -Dflyway.password=postgres
+or
+make fclean
 ```
 
 ## Start Application using docker
@@ -76,6 +80,8 @@ OR
 ```
 1 -> ./gradlew build
 2 -> java -jar build/libs/kotlin-auth-service-1.0.0-SNAPSHOT.jar
+or 
+-> make start
 ``` 
 
 ## Run Unit Tests
